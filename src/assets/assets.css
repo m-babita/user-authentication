@@ -15,7 +15,7 @@ form{
 }
 
 .form__container{
-    width: 40%;
+    width: 20%;
     background: rgba(18, 18, 19, 0.5);
     box-shadow:5px 6px 5px rgb(33, 43, 44) ;
     border-radius: 10px;
@@ -30,10 +30,16 @@ form{
     border-radius: 10px 10px 0 0;
     margin-bottom: 0.5rem;
 }
+i{
+    color: rgb(116, 156, 163);
+    font-size: 0.9rem;
+    margin: 0 .5rem;
+}
 input{
     color: rgb(116, 156, 163);
     font-size: 0.9rem;
-    margin: 1rem;
+    margin: 1rem 1rem 0 0;
+    padding: 0.5rem 0;
     border: none;
     outline: none;
     background-color: transparent;
@@ -50,3 +56,13 @@ button{
     font-weight: 550;
 }
 
+@media screen and (max-width:500px){
+    .form__container{
+        width: 80%;
+    }
+
+    input{
+        width: 75%;
+        font-size: 0.8rem;
+    }
+}

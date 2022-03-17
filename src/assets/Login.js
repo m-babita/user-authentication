@@ -11,8 +11,13 @@ function Login() {
         </div>
         <div className='form__body'>
           
+          <label><i class="ri-mail-line"></i>
           <input type='email' placeholder='Email ID'></input>
+          </label> <br/>
+
+          <label> <i class="ri-lock-line"></i>
           <input type='password' placeholder='Password'></input>
+          </label>
         </div>
         <button>LOGIN</button>
       </div>
