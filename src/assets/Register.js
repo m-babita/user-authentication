@@ -1,15 +1,17 @@
 import React,{useRef, useState, useEffect} from 'react'
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import "./assets.css"
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
+  const navigate = useNavigate();
 
   const userRef = useRef();
   const errRef = useRef();
   
-  const [name, setName] = useState('')
+  const [userName, setName] = useState('')
 
   const [email, setEmail] = useState('')
 
@@ -38,10 +40,6 @@ const Register = () => {
 
   
   const onSubmit = async (e) =>{
-
-    if (name.length < 6) {
-			setErr("Name should be longer than 5 characters!");
-		}
     e.preventDefault()
     const v1 = PWD_REGEX.test(password)
     if(!v1){
@@ -50,7 +48,7 @@ const Register = () => {
     }
     
     try {
-      let data = { name, email, password };
+      let data = { userName, email, password };
       const response = await axios.post('https://user-auth-apii.herokuapp.com/api/v1/register',
           data,
       
@@ -62,11 +60,15 @@ const Register = () => {
       setEmail('')
       setPwd('')
       setMatchPwd('');
+      navigate("/");
   }
   catch (err) {
     if (!err?.response) {
         setErr('No Server Response!');
     } 
+    else if (userName.length < 6) {
+			setErr("Name should be longer than 5 characters!");
+		}
     else {
         setErr('Something Went Wrong! Enter valid entries')
     }
@@ -101,7 +103,7 @@ const Register = () => {
           <i className="ri-user-3-line"></i>
           <input 
             type='text' placeholder='Your Name'
-            name='name' value={name}
+            name='name' value={userName}
             ref={ userRef} id="name"
             required autoComplete='off'
             onChange = {(e)=>setName(e.target.value)}/>
@@ -180,7 +182,7 @@ const Register = () => {
       </div>
       <p className='form_foot'>
       Already registered?
-          <a href="./">Sign In</a>
+          <button className="redirect" onClick={() => navigate("/login")} >Sign In</button>
       </p>
     </form>
     

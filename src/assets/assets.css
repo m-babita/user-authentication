@@ -28,11 +28,8 @@ form{
     padding: 2rem;
 
 }
-.header > p,
-span{
-    margin: 10px;
-}
- a{
+
+ .form_foot>button{
     text-decoration: none;
     color:rgb(0, 97, 97);
     font-size: .8rem;
@@ -131,9 +128,6 @@ button{
     margin-bottom: 0.5rem;
 }
 
-.line {
-    display: inline-block;
-}
 
 @media screen and (max-width:500px){
     .form__container{

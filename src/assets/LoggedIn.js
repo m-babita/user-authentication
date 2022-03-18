@@ -1,26 +1,22 @@
 import "./assets.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useContext } from "react-router-dom";
+import AuthContext from './AuthProvider'
 
-const LoggedIn = ({ setLoggedIn, name }) => {
+const LoggedIn = () => {
+	const {setAuth} = useContext(AuthContext)
 	const navigator = useNavigate();
 
 	const logOutHandler = (e) => {
-		setLoggedIn(false);
+		setAuth({ userName})
+		setSuccess(false);
 		navigator("/login");
 	};
 	return (
 		<div>
-			<nav>
-				<ul>
-					<li>User-Auth</li>
-					<li>
-						<button className="btn-log-out" onClick={logOutHandler}>
-							Log-Out
-						</button>
-					</li>
-				</ul>
-			</nav>
-			<h1>Welcome Back, {name}</h1>
+			<button className="btn-log-out" onClick={logOutHandler}>
+			Log-Out
+			</button>
+			Welcome Back, {userName}
 		</div>
 	);
 };

@@ -1,10 +1,12 @@
 import React,{useRef, useEffect, useState, useContext} from 'react'
 import AuthContext from './AuthProvider'
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import './assets.css'
 
 const Login = () => {
   const {setAuth} = useContext(AuthContext)
+  const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
 
@@ -20,7 +22,7 @@ const Login = () => {
 
   useEffect(()=>{
     setErr('')
-  }, [email, password])
+  }, [email, password,success])
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
@@ -36,6 +38,7 @@ const Login = () => {
       setEmail('')
       setPwd('')
       setSuccess(true)
+      navigate("/");
     } catch(err){
         if (!err?.response) {
           setErr('No Server Response!');
@@ -99,9 +102,8 @@ const Login = () => {
       </div>
       <p className='form_foot'>
       Haven't registered yet?
-      <span className="line">
-          <a href="/login.js">Sign Up</a>
-      </span>
+          <button className="redirect" onClick={() => navigate("/register")} >Sign Up</button>
+      
       </p>
       </form>
     )}
