@@ -79,7 +79,7 @@ const Login = () => {
               <i className="ri-mail-line"></i>
           <input 
             type='email' placeholder='example@gmail.com'
-            value={email} id="email"
+            id="email"
             ref={userRef}
             required autoComplete='off'
             onChange = {(e)=>setEmail(e.target.value)}/>
@@ -92,9 +92,8 @@ const Login = () => {
             </div>
             <i className="ri-lock-line"></i>
           <input 
-            type='password' placeholder='Password'
-            value={password} 
-            required id="password"
+            type='password' placeholder='Password' 
+            required id="current-password"
             onChange = {(e)=>setPwd(e.target.value)}
             />
         </div>
