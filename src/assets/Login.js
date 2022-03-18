@@ -1,13 +1,67 @@
-import React, {useState} from 'react'
+import React,{useRef, useEffect, useState, useContext} from 'react'
+import AuthContext from './AuthProvider'
+import axios from 'axios'
 import './assets.css'
 
-function Login() {
+const Login = () => {
+  const {setAuth} = useContext(AuthContext)
+  const userRef = useRef();
+  const errRef = useRef();
+
   const [email, setEmail] = useState('')
   const [password, setPwd] = useState('')
 
+  const [err, setErr] = useState('')
+  const [success, setSuccess] = useState(false)
+
+  useEffect(()=>{
+    userRef.current.focus()
+  },[])
+
+  useEffect(()=>{
+    setErr('')
+  }, [email, password])
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault();
+    
+    try {
+      const data = { email, password };
+				const response = await axios.post(
+					"https://user-auth-apii.herokuapp.com/api/v1/login",
+					data
+				);
+      console.log(response?.data);
+      setAuth({ email, password })
+      setEmail('')
+      setPwd('')
+      setSuccess(true)
+    } catch(err){
+        if (!err?.response) {
+          setErr('No Server Response!');
+      } 
+      else {
+          setErr('Unauthorized')
+      }
+      errRef.current.focus();
+    }
+    
+  }
   return (
-    <form>
-      <h2 className="header">User Authentication</h2><br/>
+    <>
+    {success ? (
+                <div className="header">
+                    <h2 >Successfully Logged In</h2>
+                    <p>
+                        <a href="./">Go back</a>
+                    </p>
+                </div>
+            ) : (
+      <form onSubmit={handleSubmit}>
+
+      <h2 className="form__header">User Authentication</h2><br/>
+
+      <p ref={errRef} className={err ? "err" : "offscreen"} aria-live="assertive">{err}</p>
       <div className='form__container'>
         <div className='form__title'>
             <h3>USER LOGIN</h3>
@@ -22,7 +76,8 @@ function Login() {
               <i className="ri-mail-line"></i>
           <input 
             type='email' placeholder='example@gmail.com'
-            name='email' value={email}
+            value={email} id="email"
+            ref={userRef}
             required autoComplete='off'
             onChange = {(e)=>setEmail(e.target.value)}/>
            <br/>
@@ -35,20 +90,22 @@ function Login() {
             <i className="ri-lock-line"></i>
           <input 
             type='password' placeholder='Password'
-            name='password' value={password}
-            required 
+            value={password} 
+            required id="password"
             onChange = {(e)=>setPwd(e.target.value)}
             />
         </div>
         <button>LOGIN</button>
       </div>
       <p className='form_foot'>
-      Create Account<br />
+      Haven't registered yet?
       <span className="line">
           <a href="/login.js">Sign Up</a>
       </span>
       </p>
-    </form>
+      </form>
+    )}
+    </>
   )
 }
 

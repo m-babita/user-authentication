@@ -1,5 +1,5 @@
 import React,{useRef, useState, useEffect} from 'react'
-import axios from './axios.js';
+import axios from 'axios';
 import "./assets.css"
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -29,18 +29,19 @@ const Register = () => {
   },[])
   
   useEffect(()=>{
+    setErr('')
     const result = PWD_REGEX.test(password)
-    console.log(result, password)
     setValidPwd(result)
     const match = password === matchPwd;
     setValidMatch(match)
   },[password, matchPwd])
 
-  useEffect(() =>{
-    setErr('')
-  }, [name,password, matchPwd])
-
+  
   const onSubmit = async (e) =>{
+
+    if (name.length < 6) {
+			setErr("Name should be longer than 5 characters!");
+		}
     e.preventDefault()
     const v1 = PWD_REGEX.test(password)
     if(!v1){
@@ -49,16 +50,12 @@ const Register = () => {
     }
     
     try {
-      const response = await axios.post('/register',
-          JSON.stringify({ name, email, password }),
-          {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
-          }
+      let data = { name, email, password };
+      const response = await axios.post('https://user-auth-apii.herokuapp.com/api/v1/register',
+          data,
+      
       );
       console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response))
       setSuccess(true);
 
       setName('')
@@ -68,11 +65,10 @@ const Register = () => {
   }
   catch (err) {
     if (!err?.response) {
-        setErr('No Server Response');
-    } else if (err.response?.status === 409) {
-        setErr('Username Taken');
-    } else {
-        setErr('Registration Failed')
+        setErr('No Server Response!');
+    } 
+    else {
+        setErr('Something Went Wrong! Enter valid entries')
     }
     errRef.current.focus();
   }
@@ -82,15 +78,15 @@ const Register = () => {
     <>
     {success ? (
                 <div className="header">
-                    <h1>Successfully Registered!</h1>
+                    <h2>Successfully Registered!</h2>
                     <p>
-                        <a href="./login">Sign In</a>
+                        <a href="./">Sign In</a>
                     </p>
                 </div>
             ) : (
               <section>
     <form onSubmit = {onSubmit}>
-      <h2 className="header">User Authentication</h2><br/>
+      <h2 className="form__header">User Authentication</h2><br/>
       <p ref={errRef} className={err ? "err" : "offscreen"} aria-live="assertive">{err}</p>
       <div className='form__container'>
         
@@ -106,7 +102,7 @@ const Register = () => {
           <input 
             type='text' placeholder='Your Name'
             name='name' value={name}
-            ref={ userRef}
+            ref={ userRef} id="name"
             required autoComplete='off'
             onChange = {(e)=>setName(e.target.value)}/>
            <br/>
@@ -119,6 +115,7 @@ const Register = () => {
               <i className="ri-mail-line"></i>
           <input 
             type='email' placeholder='example@gmail.com'
+            id ="email"
             name='email' value={email}
             required autoComplete='off'
             onChange = {(e)=>setEmail(e.target.value)}/>
@@ -140,7 +137,7 @@ const Register = () => {
           <input 
             type='password' placeholder='Password'
             name='password' value={password}
-            required 
+            required id ="password"
             aria-invalid={validPwd ? "false" : "true"}
             aria-describedby="pwdnote"
             onFocus = {()=> setPwdFocus(true)}
@@ -169,23 +166,21 @@ const Register = () => {
           <input 
             type='password' placeholder='Password'
             name='matchPwd' value={matchPwd}
-            required 
+            required  id="conf_password"
             aria-invalid={validMatch ? "false" : "true"}
             aria-describedby="confirmnote"
             onFocus = {()=> setMatchFocus(true)}
             onBlur = {()=> setMatchFocus(false)}
             onChange = {(e)=>setMatchPwd(e.target.value)}/>
           <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-           Must match the password.
+          <i className="ri-information-line"></i> Must match the password.
             </p>
         </div>
         <button disabled={!validPwd || !validMatch ? true : false}>SIGNUP</button>
       </div>
       <p className='form_foot'>
-      Already registered?<br />
-      <span className="line">
-          <a href="/login.js">Sign In</a>
-      </span>
+      Already registered?
+          <a href="./">Sign In</a>
       </p>
     </form>
     
