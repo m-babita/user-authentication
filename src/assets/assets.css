@@ -7,7 +7,6 @@ body{
     background-image: linear-gradient(to right, rgb(45, 56, 104) , rgb(51, 117, 112));
 }
 form{
-    margin: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,7 +44,6 @@ form{
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    
 }
 
 .form__title{
@@ -87,7 +85,6 @@ button{
     display: flex;
     flex-direction: row;
     margin: 1rem 0 0 1rem;
-
 }
 
 .instructions {
@@ -133,9 +130,9 @@ button{
 
 @media screen and (max-width:500px){
     .form__container{
-        width: 90%;
+        width: 100%;
     }
-
+    
     input{
         width: 70%;
         font-size: 0.8rem;
@@ -153,8 +150,11 @@ button{
         width: 50%;
     }
     .header{
-        font-size: 1rem;
+        font-size: .9rem;
         margin: 2rem;
         padding-top: 2rem;
+    }
+    form{
+        font-size: .8rem;
     }
 }
