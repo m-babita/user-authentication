@@ -1,11 +1,12 @@
-import React,{useRef, useEffect, useState, useContext} from 'react'
-import AuthContext from './AuthProvider'
+import React,{useRef, useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
+import useAuth from './useAuth';
 import axios from 'axios'
 import './assets.css'
 
 const Login = () => {
-  const {setAuth} = useContext(AuthContext)
+  
+  const {setAuth} = useAuth()
   const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
@@ -38,7 +39,7 @@ const Login = () => {
       setEmail('')
       setPwd('')
       setSuccess(true)
-      navigate("/");
+      
     } catch(err){
         if (!err?.response) {
           setErr('No Server Response!');
@@ -50,13 +51,17 @@ const Login = () => {
     }
     
   }
+  const logout = () => {
+    setSuccess(false)
+    navigate("/")
+  }
   return (
     <>
     {success ? (
                 <div className="header">
                     <h2 >Successfully Logged In</h2>
                     <p>
-                        <a href="./">Go back</a>
+                    <button className="redirect" onClick={logout} >Log Out</button>
                     </p>
                 </div>
             ) : (
@@ -101,7 +106,7 @@ const Login = () => {
       </div>
       <p className='form_foot'>
       Haven't registered yet?
-          <button className="redirect" onClick={() => navigate("/register")} >Sign Up</button>
+          <button  className='redirect'onClick={() => navigate("/register")} >Sign Up</button>
       
       </p>
       </form>

@@ -8,7 +8,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const Register = () => {
   const navigate = useNavigate();
 
-  const userRef = useRef();
+  const userRef = useRef(); 
   const errRef = useRef();
   
   const [userName, setName] = useState('')
@@ -50,17 +50,15 @@ const Register = () => {
     try {
       let data = { userName, email, password };
       const response = await axios.post('https://user-auth-apii.herokuapp.com/api/v1/register',
-          data,
-      
+          data
       );
       console.log(response?.data);
-      setSuccess(true);
 
+      setSuccess(true);
       setName('')
       setEmail('')
       setPwd('')
       setMatchPwd('');
-      navigate("/");
   }
   catch (err) {
     if (!err?.response) {
@@ -70,7 +68,7 @@ const Register = () => {
 			setErr("Name should be longer than 5 characters!");
 		}
     else {
-        setErr('Something Went Wrong! Enter valid entries')
+        setErr('Something Went Wrong!')
     }
     errRef.current.focus();
   }
@@ -80,9 +78,9 @@ const Register = () => {
     <>
     {success ? (
                 <div className="header">
-                    <h2>Successfully Registered!</h2>
+                    <h2>Successfully Registered! {userName}</h2>
                     <p>
-                        <a href="./">Sign In</a>
+                        <button className="redirect" onClick={() => navigate("/login")} >Sign In</button>
                     </p>
                 </div>
             ) : (
@@ -182,7 +180,7 @@ const Register = () => {
       </div>
       <p className='form_foot'>
       Already registered?
-          <button className="redirect" onClick={() => navigate("/login")} >Sign In</button>
+          <button  className='redirect'onClick={() => navigate("/login")}  >Sign In</button>
       </p>
     </form>
     

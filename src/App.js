@@ -19,13 +19,13 @@ function App() {
           }
           />
         <Route
-          path="/login"
+          path="login"
           element={
             <Login/>
           }
           />
           <Route
-          path="/register"
+          path="register"
           element={
             <Register/>
           }
