@@ -1,12 +1,12 @@
-import React,{useRef, useEffect, useState} from 'react'
+import React,{useRef, useEffect, useState, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
-import useAuth from './useAuth';
+import AuthContext from './AuthProvider';
 import axios from 'axios'
 import './assets.css'
 
 const Login = () => {
   
-  const {setAuth} = useAuth()
+  const {setAuth} = useContext(AuthContext);
   const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
@@ -68,7 +68,7 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
 
       <h2 className="form__header">User Authentication</h2><br/>
-
+              
       <p ref={errRef} className={err ? "err" : "offscreen"} aria-live="assertive">{err}</p>
       <div className='form__container'>
         <div className='form__title'>
