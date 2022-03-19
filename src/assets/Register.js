@@ -48,7 +48,7 @@ const Register = () => {
     }
     
     try {
-      let data = { userName, email, password };
+      let data = { name: userName, email, password };
       const response = await axios.post('https://user-auth-apii.herokuapp.com/api/v1/register',
           data
       );
